@@ -93,8 +93,41 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 **Scope impact:** LAF-03
 **Provisional assumption:** Reframe required before posting. Remote agent armed for Sun 3 May 20:00 UTC reports "not posted yet" if Issue isn't up — harmless if reframe slips past Sunday.
 **Decision needed by:** Sun 3 May 20:00 UTC if posting this weekend, otherwise can slip to post-polling.
-**Status:** OPEN
+**Status:** OPEN (action taken in LAF-03.02; awaiting Becky review + Tom post)
 **Action item:** LAF-00.12 produces kickoff brief for CC follow-up session: reframe Issue body + rebuild Adur OG comparison image (Lancing Ring as council-level swap). Becky review before post.
+**Update 2026-05-03 LAF-03.02:** Reframe complete. Issue body + Adur/Lancing Ring mockup produced at `~/Desktop/LAF-00-12-Strategy/LAF-03_02-og-issue-council-phase1.md` and `~/Desktop/LAF-00-12-Strategy/LAF-03_02-og-adur-lancing-ring-mockup.png`. Phase 1 framed as ~150 council bg swaps (~30MB total in-repo); Phase 2 ward-level demoted to future Issue with Cokeham mockup preserved at `~/Desktop/LAF-00-11-Strategy/LAF-03_01-og-cokeham-comparison.png` for that future use. Status closes to RESOLVED on Issue post.
+
+### DQ-OG-02 — Council count precision (LAF-05 dependency)
+**Raised:** 2026-05-03 LAF-03.02
+**Trigger:** LAF-03.02 Issue body uses "~150 English councils with elections" as a working estimate. The grounded subset from in-flight Wave 1 is 84 councils / 1,004 wards. LAF-05 (D4D) has not yet produced a clean ballot-list-derived council count for May 2026 cycle.
+**Scope impact:** LAF-03 (Issue copy precision), LAF-05 (manifest)
+**Provisional assumption:** "~150" stated in Issue; precise figure not load-bearing for the proposal.
+**Decision needed by:** Non-blocking. Precise figure helpful before any final Phase 1 manifest curation; surface to LAF-05 if blocking.
+**Status:** OPEN
+
+### DQ-OG-03 — Current OG generation mechanism unknown
+**Raised:** 2026-05-03 LAF-03.02
+**Trigger:** Live SRUK serves `/local/{council}/og.png` as a 1200×630 PNG. We don't know whether it's a static asset bundled in `/public/local/{council}/` at build time, or generated dynamically (e.g. via `@vercel/og`). Asked the maintainer in Issue Open question 1.
+**Scope impact:** LAF-03 (PR scope for Phase 1)
+**Provisional assumption:** Issue describes the requirement bg-source-agnostic; PR scope decided by maintainer's answer.
+**Decision needed by:** When Phase 1 PR is scoped (LAF-03.03 follow-up).
+**Status:** OPEN
+
+### DQ-OG-04 — Mockup wordmark recreation is schematic
+**Raised:** 2026-05-03 LAF-03.02
+**Trigger:** Adur Lancing Ring mockup recreates the StopReformUK wordmark with Helvetica `StopReformUK` text + Unicode `✗` glyph in FD pink, rather than compositing the real X-stroke + brush-mask brand assets (`brandlogoxshape.png` etc). Functional for showing a bg swap, but not pixel-faithful to the real OG.
+**Scope impact:** LAF-03 (mockup quality)
+**Provisional assumption:** Ship mockup as-is; flagged in Issue body as schematic.
+**Decision needed by:** If maintainer requests pixel-faithful comparison, re-render mockup with real brand assets composited (LAF-04 video template knows how).
+**Status:** OPEN
+
+### DQ-OG-05 — Polling-day count drift in LAF-03.02 kickoff brief
+**Raised:** 2026-05-03 LAF-03.02
+**Trigger:** LAF-03.02 kickoff stated "Polling day: Thu 7 May 2026 (5 days)" but today is Sun 3 May 2026 — 4 days, not 5. Trivial off-by-one in brief authoring.
+**Scope impact:** Operating model (parent brief-template review only)
+**Provisional assumption:** Used 4 in close-of-session and Issue copy; no downstream impact.
+**Decision needed by:** Whenever — folded into parent's template review.
+**Status:** OPEN
 
 ---
 
