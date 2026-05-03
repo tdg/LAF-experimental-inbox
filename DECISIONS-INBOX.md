@@ -2,8 +2,8 @@
 
 Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `README.md` for conventions.
 
-**Last updated:** 2026-05-02 LAF-00.12
-**Next parent session:** LAF-00.13 (TBD)
+**Last updated:** 2026-05-02 LAF-00.12 close (post LAF-01.09 escalation absorption)
+**Next parent session:** LAF-00.13 (TBD post-polling, unless urgent)
 
 ---
 
@@ -11,17 +11,37 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 
 ### DQ-STRAT-22 — Council vs ward as primary deliverable
 **Raised:** 2026-05-01 LAF-03.01 (surfaced via post-LAF-00.11 side-note)
-**Trigger:** Live SRUK site renders OG images at council level (`/local/{council}/`), not ward level. Ward-level LAF-01 sourcing was producing assets the live site couldn't directly consume.
+**Trigger:** Live SRUK site renders OG images at council level (`/local/{council}/`), not ward level.
 **Scope impact:** LAF-01, LAF-03, LAF-04, LAF-05, LAF-06
 **Status:** RESOLVED
-**Resolution:** Council-level is primary deliverable. Ward-level demoted to "bespoke on demand" — generated for big urban councils where one image is meaningless, high-stakes wards Becky/Tom flag, or post-launch reactive content. Ward Wave 1 sourcing continues as input library for council-level selection. (LAF-00.12)
+**Resolution:** Council-level is primary deliverable. Ward-level demoted to "bespoke on demand" – generated for big urban councils, high-stakes wards Becky/Tom flag, or post-launch reactive content. Ward Wave 1 sourcing continues as input library for council-level selection. (LAF-00.12)
 
 ### DQ-STRAT-21 — Codebase migration to Git
 **Raised:** ~2026-04-21 (Tom open intent), reraised 2026-05-01
-**Trigger:** Project files in `/mnt/project/` are read-only from Claude's side; manual paste-back at every session boundary; no version control on Part A/B.
-**Scope impact:** All workstreams (operating model)
 **Status:** RESOLVED IN PRINCIPLE
-**Resolution:** Promoted from "open intent" to "planned, post-7-May." Scope draft to follow post-election. Part B §19 to be updated. (LAF-00.12)
+**Resolution:** Promoted from "open intent" to "planned, post-7-May." Scope draft to follow post-election. Part B §19 updated. (LAF-00.12)
+
+### DQ-DATA-01 — D4D recommendations for Senedd constituencies
+**Raised:** 2026-05-02 LAF-00.12
+**Status:** RESOLVED
+**Resolution:** Wales recommendation = "heart recommendation": vote any of Green / Lib Dem / Labour / Plaid Cymru, with GOTV + share emphasis. D4D coverage confirmed by LAF-01.09 Gate 0 (16 Senedd constituencies present under `wac` slug). See DQ-STRAT-24 for content-template implications. (LAF-00.12)
+
+### DQ-DATA-02 — D4D recommendations for Scottish AMS regions
+**Raised:** 2026-05-02 LAF-00.12
+**Status:** RESOLVED
+**Resolution:** D4D coverage confirmed by LAF-01.09 Gate 0 — 8 Holyrood regions present under `sp` slug, GSS S17000021–28 (post-2026-review boundaries). (LAF-00.12)
+
+### DQ-PROCESS-01 — Surface upstream-scope-changing facts immediately
+**Raised:** 2026-05-02 LAF-00.12
+**Status:** RESOLVED
+**Resolution:** This inbox repo (`https://github.com/tdg/LAF-experimental-inbox`) is the resolution mechanism. Adopted in Part B v4.7 §20. (LAF-00.12)
+
+### DQ-IMG-29 — Filename normalisation for mixed Welsh GSS formats
+**Raised:** 2026-05-02 LAF-01.09 (originally raised as DQ-IMG-28; renumbered to avoid collision with parent's storage-migration DQ-IMG-28)
+**Trigger:** D4D returned 4 Welsh constituencies with `W09xxxxxx` GSS codes and 12 with `senedd:slug-format` values; LAF-01.09 proposed strip-prefix normalisation for filename consistency.
+**Scope impact:** LAF-01.09 sourcing, all downstream Welsh asset pipelines
+**Status:** RESOLVED
+**Resolution:** No filename-convention amendment. Re-resolve the W-codes first. Democracy Club Elections has `W09xxxxxx` codes for **all 16** Senedd constituencies (verified: Casnewydd Islwyn = `gss:W09000054`). The `senedd:` colon-form values are DC ballot-ID slug references, not GSS substitutes. The 4-vs-12 split is a D4D data-layer artefact (likely a missing or wrong join), not pre-GSS gaps. **Action for LAF-01.09:** before Gate 0.5, re-query D4D for the proper W-codes via the DC reference, or fetch directly from DC's elections API (`elections.democracyclub.org.uk/elections/senedd.{slug}.2026-05-07/`). All 16 Welsh constituencies follow standard form: `LAF-01-images-[slug]-W09xxxxxx-[variant].ext`. (LAF-00.12)
 
 ---
 
@@ -29,117 +49,80 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 
 ### DQ-IMG-23 — Old Warley council attribution mismatch
 **Raised:** 2026-05-02 LAF-01.08
-**Trigger:** Brief documentation said Walsall, manifest + GSS confirmed Sandwell. Sourcer followed GSS as authoritative.
-**Scope impact:** LAF-01 manifest provenance
-**Provisional assumption:** GSS is authoritative; brief was wrong. Image and manifest reflect Sandwell.
-**Decision needed by:** Non-blocking — confirm at next LAF-00.
+**Trigger:** Brief documentation said Walsall, manifest + GSS confirmed Sandwell.
+**Provisional assumption:** GSS authoritative; image and manifest reflect Sandwell.
+**Decision needed by:** Non-blocking.
 **Status:** OPEN
+
+### DQ-IMG-25 — Constituency-level Scotland (73 spc)
+**Raised:** 2026-05-02 LAF-01.09 (originally parked in LAF-00.11 brief; resurfaced)
+**Trigger:** D4D has 73 Scottish Parliament constituencies (spc) for 2026-05-07. LAF-01.09 proposed swing at top 20 most competitive at close-of-session if margin.
+**Scope impact:** LAF-01.09
+**Provisional assumption:** Out of scope for this cycle. Per Tom: SNP competitive across most 73; progressive party so tactical-vote calls would be sparse and counterproductive. Pluralism leverage is in regional list. Do not reopen even with margin. If LAF-01.09 has spare capacity at close, prefer: more photos per region (15→20), bilingual Welsh A/B coverage, or boundary verification work.
+**Decision needed by:** Confirmed at LAF-00.12 — ruling stands.
+**Status:** OPEN — kept visible because it's a recurring temptation; surface for next-cycle planning.
+
+### DQ-IMG-26 — Sourcer per-area distance/cluster params for larger geographies
+**Raised:** 2026-05-02 LAF-01.09
+**Scope impact:** LAF-01.09 only
+**Status:** OPEN — owned in LAF-01.09 (child-scoped, not cross-cutting)
+
+### DQ-IMG-27 — Bilingual Welsh search queries
+**Raised:** 2026-05-02 LAF-01.09
+**Trigger:** 12 of 16 Welsh constituencies have Welsh-primary names (DBCC determination).
+**Provisional assumption:** A/B before full run, higher priority.
+**Status:** OPEN — owned in LAF-01.09 (child-scoped); recommend keep-priority because heart-recommendation copy may also need bilingual Welsh, decision pending under DQ-STRAT-24.
 
 ### DQ-IMG-28 — Image storage migration & live-upload pattern
 **Raised:** 2026-05-01 (post-LAF-00.11 side-note)
-**Trigger:** Local outputs require laptop to stay on for downstream consumers (LAF-03 OG, future website). Need cloud-accessible store with concurrent upload pattern.
-**Scope impact:** LAF-01, LAF-03, LAF-06
-**Provisional assumption:** Wave 1 continues writing to local `~/dev/laf-01-02/outputs/`. Don't delete or move outputs directory until storage decision made.
-**Decision needed by:** Non-blocking pre-polling. Adam Hodgkin to advise on backend (R2 vs B2 vs GitHub LFS) given SRUK fetch path.
+**Trigger:** Local outputs require laptop to stay on for downstream consumers.
+**Provisional assumption:** Wave 1 continues writing to local. Don't delete or move outputs directory until storage decision made.
+**Decision needed by:** Non-blocking pre-polling. Adam Hodgkin to advise on backend.
 **Status:** OPEN
-**Notes:** Council pivot (DQ-STRAT-22) shrinks scope significantly: ~370 council images at ~75MB total, not 15,000 ward images at ~3GB. Adam conversation should reflect smaller storage problem.
+**Notes:** Council pivot shrinks scope: ~136–137 council images at ~30MB total, not 15,000 ward at ~3GB.
 
-### DQ-STRAT-23 — LAF filename convention (raised by Claude Code)
+### DQ-STRAT-23 — LAF filename convention review (raised by Claude Code)
 **Raised:** 2026-05-01 LAF-03.01 close-of-session
-**Trigger:** Claude Code session noted inconsistencies in LAF filename convention application; details in close-of-session report on Tom's Desktop.
-**Scope impact:** All workstreams (operating model)
+**Trigger:** CC noted inconsistencies in filename convention application.
 **Provisional assumption:** Existing convention `LAF-NN.SS-[workstream]-[description].ext` continues until reviewed.
-**Decision needed by:** Non-blocking — review when close-of-session report content is brought into project files.
+**Decision needed by:** Non-blocking.
 **Status:** OPEN
-**Notes:** Original CC numbering was DQ-STRAT-21, renumbered to DQ-STRAT-23 here to avoid collision with the codebase-migration item.
+**Notes:** Originally numbered DQ-STRAT-21 by CC, renumbered to avoid collision. The Welsh-filename variant earlier folded into this DQ has been resolved out of scope by DQ-IMG-29 — standard form holds for all 16.
+
+### DQ-STRAT-24 — Wales "heart recommendation" content template
+**Raised:** 2026-05-02 LAF-00.12
+**Trigger:** Wales recommendation is structurally different from England/Scotland – four-party bloc + GOTV/share emphasis.
+**Scope impact:** LAF-01.09, LAF-03, LAF-04, LAF-05, LAF-06
+**Provisional assumption:** Wales content uses bloc-message template across all 16 constituencies. Visual single-landmark per constituency; copy lists all four parties; CTAs emphasise GOTV + share.
+**Decision needed by:** Before any Wales content ships.
+**Status:** OPEN
+**Notes:** Bilingual (Welsh/English) copy decision also pending – flagged in LAF-01.09 brief and DQ-IMG-27.
 
 ### DQ-VID-01 — Sound for video pipeline
 **Raised:** 2026-05-02 LAF-00.12
-**Trigger:** Video sound was open from LAF-04.01; surfaces again ahead of LAF-04.02. Editor needs sound options alongside image options at edit time.
-**Scope impact:** LAF-04
-**Provisional assumption:** Sound becomes sub-child of LAF-04; editor matches sound to vision creatively (potentially surprisingly), not literally to geography.
-**Decision needed by:** Before LAF-04.02 council paper-edit pass.
+**Provisional assumption:** LAF-04.02 ships with silent track. Sound strategy resolved in a short follow-up session.
+**Decision needed by:** Before any wide council-video batch ships.
 **Status:** OPEN
-**Action item:** LAF-00.12 to produce CC-licensed shortlist (3 ambient/soundscape: industry + nature; 3 music tracks varying moods; silent track; local-upcoming-band angle if findable) plus topline scoping summary for CC sound use.
-
-### DQ-PROCESS-01 — Surface upstream-scope-changing facts from child sessions immediately
-**Raised:** 2026-05-02 LAF-00.12
-**Trigger:** DQ-STRAT-22 (council pivot) was discovered by LAF-03.01 child session but not surfaced to parent for ~2 weeks; sat as in-session implementation note.
-**Scope impact:** Operating model (Part B)
-**Provisional assumption:** Cross-cutting facts from execution sessions go into this inbox (DECISIONS-INBOX.md) on discovery, not at session close.
-**Decision needed by:** Adopt at LAF-00.12 close.
-**Status:** OPEN
-**Notes:** This inbox repo *is* the resolution mechanism — DQ-PROCESS-01's resolution will likely be "adopted, see Part B v4.7."
-
-### DQ-DATA-01 — D4D recommendations for Senedd constituencies
-**Raised:** 2026-05-02 LAF-00.12
-**Trigger:** Wales 2026 = 16 closed-list PR constituencies (D'Hondt), not council elections. Tactical-vote logic differs from FPTP councils. Need to confirm what recommendations D4D holds for Senedd constituencies and how they're shaped.
-**Scope impact:** LAF-01.09, LAF-04, LAF-05
-**Provisional assumption:** LAF-01.09 doesn't fire for Wales until D4D check completed.
-**Decision needed by:** Before LAF-01.09 fires.
-**Status:** OPEN
-
-### DQ-DATA-02 — D4D recommendations for Scottish AMS regions
-**Raised:** 2026-05-02 LAF-00.12
-**Trigger:** Scotland 2026 = Scottish Parliament elections (AMS). SNP competitive across most 73 FPTP constituencies (progressive party — sparse recommendations expected). Regional list (8 regions) is where pluralism leverage exists.
-**Scope impact:** LAF-01.09, LAF-04, LAF-05
-**Provisional assumption:** LAF-01.09 Scotland scope = 8 AMS regions. Constituencies and council areas out of scope.
-**Decision needed by:** Before LAF-01.09 fires.
-**Status:** OPEN
+**Action:** Spawn short sound strat session for CC-licensed shortlist + scoping summary.
 
 ### DQ-OG-01 — Reframe OG Issue: Phase 1 council swap, Phase 2 ward future scope
 **Raised:** 2026-05-02 LAF-00.12 (from CC handoff)
-**Trigger:** Issue body drafted 2026-05-01 with ward-level framing; council pivot taken at LAF-00.12 makes ward framing stale.
-**Scope impact:** LAF-03
-**Provisional assumption:** Reframe required before posting. Remote agent armed for Sun 3 May 20:00 UTC reports "not posted yet" if Issue isn't up — harmless if reframe slips past Sunday.
-**Decision needed by:** Sun 3 May 20:00 UTC if posting this weekend, otherwise can slip to post-polling.
-**Status:** OPEN (action taken in LAF-03.02; awaiting Becky review + Tom post)
-**Action item:** LAF-00.12 produces kickoff brief for CC follow-up session: reframe Issue body + rebuild Adur OG comparison image (Lancing Ring as council-level swap). Becky review before post.
-**Update 2026-05-03 LAF-03.02:** Reframe complete. Issue body + Adur/Lancing Ring mockup produced at `~/Desktop/LAF-00-12-Strategy/LAF-03_02-og-issue-council-phase1.md` and `~/Desktop/LAF-00-12-Strategy/LAF-03_02-og-adur-lancing-ring-mockup.png`. Phase 1 framed as ~150 council bg swaps (~30MB total in-repo); Phase 2 ward-level demoted to future Issue with Cokeham mockup preserved at `~/Desktop/LAF-00-11-Strategy/LAF-03_01-og-cokeham-comparison.png` for that future use. Status closes to RESOLVED on Issue post.
-
-### DQ-OG-02 — Council count precision (LAF-05 dependency)
-**Raised:** 2026-05-03 LAF-03.02
-**Trigger:** LAF-03.02 Issue body uses "~150 English councils with elections" as a working estimate. The grounded subset from in-flight Wave 1 is 84 councils / 1,004 wards. LAF-05 (D4D) has not yet produced a clean ballot-list-derived council count for May 2026 cycle.
-**Scope impact:** LAF-03 (Issue copy precision), LAF-05 (manifest)
-**Provisional assumption:** "~150" stated in Issue; precise figure not load-bearing for the proposal.
-**Decision needed by:** Non-blocking. Precise figure helpful before any final Phase 1 manifest curation; surface to LAF-05 if blocking.
-**Status:** OPEN
-
-### DQ-OG-03 — Current OG generation mechanism unknown
-**Raised:** 2026-05-03 LAF-03.02
-**Trigger:** Live SRUK serves `/local/{council}/og.png` as a 1200×630 PNG. We don't know whether it's a static asset bundled in `/public/local/{council}/` at build time, or generated dynamically (e.g. via `@vercel/og`). Asked the maintainer in Issue Open question 1.
-**Scope impact:** LAF-03 (PR scope for Phase 1)
-**Provisional assumption:** Issue describes the requirement bg-source-agnostic; PR scope decided by maintainer's answer.
-**Decision needed by:** When Phase 1 PR is scoped (LAF-03.03 follow-up).
-**Status:** OPEN
-
-### DQ-OG-04 — Mockup wordmark recreation is schematic
-**Raised:** 2026-05-03 LAF-03.02
-**Trigger:** Adur Lancing Ring mockup recreates the StopReformUK wordmark with Helvetica `StopReformUK` text + Unicode `✗` glyph in FD pink, rather than compositing the real X-stroke + brush-mask brand assets (`brandlogoxshape.png` etc). Functional for showing a bg swap, but not pixel-faithful to the real OG.
-**Scope impact:** LAF-03 (mockup quality)
-**Provisional assumption:** Ship mockup as-is; flagged in Issue body as schematic.
-**Decision needed by:** If maintainer requests pixel-faithful comparison, re-render mockup with real brand assets composited (LAF-04 video template knows how).
-**Status:** OPEN
-
-### DQ-OG-05 — Polling-day count drift in LAF-03.02 kickoff brief
-**Raised:** 2026-05-03 LAF-03.02
-**Trigger:** LAF-03.02 kickoff stated "Polling day: Thu 7 May 2026 (5 days)" but today is Sun 3 May 2026 — 4 days, not 5. Trivial off-by-one in brief authoring.
-**Scope impact:** Operating model (parent brief-template review only)
-**Provisional assumption:** Used 4 in close-of-session and Issue copy; no downstream impact.
-**Decision needed by:** Whenever — folded into parent's template review.
-**Status:** OPEN
+**Provisional assumption:** Reframe required before posting.
+**Decision needed by:** Sun 3 May 20:00 UTC if posting this weekend.
+**Status:** IN PROGRESS – kickoff brief produced and posted to CC LAF-03 window 2 May 2026.
 
 ---
 
-## Action items (LAF-00.12)
+## Action items pending from LAF-00.12
 
-These are not DQs but explicit work items emerging from this session:
-
-- [ ] Produce CC-licensed sound shortlist + scoping summary (DQ-VID-01)
-- [ ] Updated LAF-01.09 kickoff brief: 8 Scotland AMS regions + 16 Wales Senedd constituencies (subject to DQ-DATA-01/02)
-- [ ] Updated LAF-04.02 kickoff brief: small ward batch + council paper-edit format (6–8 wards/frame) + sound DQ
-- [ ] Kickoff brief for CC follow-up: reframe OG Issue (DQ-OG-01)
-- [ ] Updated Part A v4.10 + Part B v4.7
-- [ ] Slice 4 go-message back to image session (ENG remainder, halt at end, do not start LAF-01.09)
+- [x] Inbox repo set up + initial commit
+- [x] Slice 4 go-message conveyed to image session
+- [x] LAF-03.02 OG-Issue-reframe kickoff brief produced and fired in CC
+- [x] LAF-01.09 escalation absorbed — ruling on DQ-IMG-29 + reaffirmation of DQ-IMG-25 parked
+- [x] LAF-04.02 kickoff brief produced
+- [x] Part A v4.10 + Part B v4.7 produced
+- [ ] Sound strat session brief – follow-up short session
+- [ ] Tom to send LAF-01.09 escalation response back to that session (resume-and-direct)
+- [ ] Tom to fire LAF-04.02
 
 ---
