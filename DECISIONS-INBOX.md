@@ -121,28 +121,29 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 
 ### DQ-VID-03 — Council video: handling wards with no D4D recommendation
 **Raised:** 2026-05-03 LAF-04.02
-**Trigger:** Adur's Marine ward (E05007568) returned no tactical recommendation from D4D. Brief said "all wards in the council with recommendations" so it was omitted from the proof video. But a Marine voter searching "Adur tactical vote 2026" will see no row for their ward, which may read as "we don't know about Marine" rather than "Marine has no recommendation".
+**Trigger:** Adur's Marine ward (E05007568) has a contested ballot with locked candidates but no recommendation row in D4D. Algorithm hasn't produced one — likely pending and may resolve before polling. Brief originally framed "all wards with recommendations"; subsequent direction was to render all wards but mark the no-rec case clearly.
 **Scope impact:** LAF-04 council format spec; LAF-05 manifest definition; LAF-03 (parallel issue for OG copy)
-**Provisional assumption:** Omit no-rec wards from council videos for v1.
-**Options under consideration:**
-- A) Omit (current). Simplest. Risk: voter confusion in omitted wards.
-- B) Include with explicit "no recommendation – vote your conscience" or similar callout. Honest but adds complexity to row design and pixel budget.
-- C) Include with "(no contest)" badge. Concise but misleading if there *is* a contest, just no progressive lead.
-**Decision needed by:** Before batch council production. Non-blocking for LAF-04.02 proof.
-**Status:** OPEN
+**Provisional assumption (updated 2026-05-04 LAF-04.02 per Tom):** Include all wards. For wards with no D4D recommendation *row*, render a "Check site" pill (neutral white-outlined fill, distinct from party pills) directing the voter to look up the ward live, since the recommendation may resolve before polling. Other no-rec variants — heart-recommendation abstentions, ONLY_REGRESSIVES, VOTE_WITH_HEART_NO_REGRESSIVES, uncontested wards — need separate copy decisions and will be handled when first encountered (composition's discriminated-union row type leaves room).
+**Options now superseded:**
+- ~~A) Omit (initial v1 behaviour).~~
+- B) Include with no-rec callout — chosen, with "Check site" copy.
+- ~~C) "(no contest)" badge — rejected as potentially misleading.~~
+**Decision needed by:** Before batch council production — confirm "Check site" copy + extend to other no-rec variants as they appear.
+**Status:** OPEN — provisional updated; awaiting parent close.
 
 ### DQ-VID-04 — Council video background treatment
 **Raised:** 2026-05-03 LAF-04.02
-**Trigger:** Council videos cover N wards, so any single landmark photo would be arbitrary across the set. LAF-04.02 proof renders on solid black with a subtle pink radial gradient, no photo. Visually clean but may feel sparse next to ward videos which carry full landmark imagery.
+**Trigger:** Council videos cover N wards, so any single landmark photo would be arbitrary across the set. v1 used solid black; visually sparse next to ward videos which carry full landmark imagery.
 **Scope impact:** LAF-04 council visual identity, all ~136–137 councils
-**Provisional assumption:** Solid black with subtle radial gradient (current proof).
-**Options under consideration:**
-- A) Solid black + subtle gradient (current).
-- B) Tile/montage of all ward photos as background, low opacity behind text.
-- C) Single hero shot per council (a recognisable landmark for the *council* rather than a ward — town halls, civic buildings). Requires LAF-01 council-level imagery sourcing pass.
-- D) Animated palette wash (FD pink fields shifting across frames).
-**Decision needed by:** Before batch council production. Non-blocking for LAF-04.02 proof.
-**Status:** OPEN
+**Provisional assumption (updated 2026-05-04 LAF-04.02 per Tom):** Background = best-scored landmark photo across all wards in the council, selected by LAF-01 sourcer score (highest `score=` value across rank-2..5 photos in the council's manifest rows). For Adur, this is Widewater photo-1, score 9.0. WardVideo-style treatment (full-frame cover, 0.85 opacity) with a darker scrim than ward template (`rgba(0,0,0,0.55) → 0.7 → 0.6`) to support the higher text density of council content. Photo attribution surfaces in the end card.
+**Options now superseded:**
+- ~~A) Solid black + subtle gradient (initial v1).~~
+- ~~B) Tile/montage of all ward photos as background.~~
+- C → adopted with refinement: best-of-geography rather than council-hero (avoids needing a separate LAF-01 council-level imagery pass).
+- ~~D) Animated palette wash.~~
+**Decision needed by:** Before batch council production.
+**Status:** OPEN — provisional updated; awaiting parent close.
+**Note for LAF-01/LAF-05:** "best photo across council" needs a stable selection rule when batched — currently it's "highest `score` value in `sourcing_notes` across all wards' rank-2..5 photos". Worth pinning convention in LAF-05 manifest.
 
 ### DQ-STRAT-25 — Part B §14 session-log drift on LAF-04.02 row
 **Raised:** 2026-05-03 LAF-04.02 (drift check at session open per Part B §15.3)
