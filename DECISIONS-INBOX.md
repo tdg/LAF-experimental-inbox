@@ -111,6 +111,47 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 **Decision needed by:** Sun 3 May 20:00 UTC if posting this weekend.
 **Status:** IN PROGRESS – kickoff brief produced and posted to CC LAF-03 window 2 May 2026.
 
+### DQ-VID-02 — Council ward-count assumptions in briefs
+**Raised:** 2026-05-03 LAF-04.02
+**Trigger:** LAF-04.02 brief assumed Adur has 8 wards ("Adur (8 wards, fits cleanly in one or two frames)"). D4D returned 14 wards (E05007562–E05007575 contiguous), 13 with tactical recs + 1 without (Marine). Multi-frame split was always the planned format so the discrepancy didn't change render strategy, but it does indicate that hand-authored ward-count facts in council-pivot briefs aren't reliable.
+**Scope impact:** LAF-04 brief authorship for council format; LAF-05 council manifest (when built)
+**Provisional assumption:** D4D is authoritative for ward roster per council. LAF-04.02 produced 2-frame Adur video (7+6) covering the 13 wards with recs; Marine omitted per brief's "all wards with recommendations" framing.
+**Decision needed by:** Before any further council briefs are authored — convention should be "query D4D for the ward roster, don't assume from memory".
+**Status:** OPEN
+
+### DQ-VID-03 — Council video: handling wards with no D4D recommendation
+**Raised:** 2026-05-03 LAF-04.02
+**Trigger:** Adur's Marine ward (E05007568) returned no tactical recommendation from D4D. Brief said "all wards in the council with recommendations" so it was omitted from the proof video. But a Marine voter searching "Adur tactical vote 2026" will see no row for their ward, which may read as "we don't know about Marine" rather than "Marine has no recommendation".
+**Scope impact:** LAF-04 council format spec; LAF-05 manifest definition; LAF-03 (parallel issue for OG copy)
+**Provisional assumption:** Omit no-rec wards from council videos for v1.
+**Options under consideration:**
+- A) Omit (current). Simplest. Risk: voter confusion in omitted wards.
+- B) Include with explicit "no recommendation – vote your conscience" or similar callout. Honest but adds complexity to row design and pixel budget.
+- C) Include with "(no contest)" badge. Concise but misleading if there *is* a contest, just no progressive lead.
+**Decision needed by:** Before batch council production. Non-blocking for LAF-04.02 proof.
+**Status:** OPEN
+
+### DQ-VID-04 — Council video background treatment
+**Raised:** 2026-05-03 LAF-04.02
+**Trigger:** Council videos cover N wards, so any single landmark photo would be arbitrary across the set. LAF-04.02 proof renders on solid black with a subtle pink radial gradient, no photo. Visually clean but may feel sparse next to ward videos which carry full landmark imagery.
+**Scope impact:** LAF-04 council visual identity, all ~136–137 councils
+**Provisional assumption:** Solid black with subtle radial gradient (current proof).
+**Options under consideration:**
+- A) Solid black + subtle gradient (current).
+- B) Tile/montage of all ward photos as background, low opacity behind text.
+- C) Single hero shot per council (a recognisable landmark for the *council* rather than a ward — town halls, civic buildings). Requires LAF-01 council-level imagery sourcing pass.
+- D) Animated palette wash (FD pink fields shifting across frames).
+**Decision needed by:** Before batch council production. Non-blocking for LAF-04.02 proof.
+**Status:** OPEN
+
+### DQ-STRAT-25 — Part B §14 session-log drift on LAF-04.02 row
+**Raised:** 2026-05-03 LAF-04.02 (drift check at session open per Part B §15.3)
+**Trigger:** Part B v4.7 §14 still lists LAF-04.02 next-pickup as "60-video three-bucket batch (best images / tightest contests / Reform defences) × 3 variants = 180 MP4s. Local in Claude Code". This was the LAF-00.11-era scope; LAF-00.12 rescoped LAF-04.02 to ward batch + council paper-edit (recorded correctly in Part A §8 and the LAF-04.02 kickoff brief). LAF-04.01 row's next-pickup line carries the same stale reference.
+**Scope impact:** Operating model bookkeeping
+**Provisional assumption:** Stale text doesn't change LAF-04.02 conduct (which followed the new kickoff brief). Surfaced per drift-check protocol; correction folds into next LAF-00.NN's Part B update.
+**Decision needed by:** Whenever — non-blocking, fold into next Part B revision.
+**Status:** OPEN
+
 ---
 
 ## Action items pending from LAF-00.12
@@ -123,6 +164,6 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 - [x] Part A v4.10 + Part B v4.7 produced
 - [ ] Sound strat session brief – follow-up short session
 - [ ] Tom to send LAF-01.09 escalation response back to that session (resume-and-direct)
-- [ ] Tom to fire LAF-04.02
+- [x] Tom to fire LAF-04.02 *(fired 2026-05-03 in Claude Code; ward batch + council paper-edit + Adur proof rendered; close-of-session report at `~/Downloads/ward-videos/LAF-04.02-video-close-of-session-report.md`)*
 
 ---
