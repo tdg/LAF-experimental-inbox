@@ -121,15 +121,32 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 
 ### DQ-VID-03 — Council video: handling wards with no D4D recommendation
 **Raised:** 2026-05-03 LAF-04.02
-**Trigger:** Adur's Marine ward (E05007568) has a contested ballot with locked candidates but no recommendation row in D4D. Algorithm hasn't produced one — likely pending and may resolve before polling. Brief originally framed "all wards with recommendations"; subsequent direction was to render all wards but mark the no-rec case clearly.
-**Scope impact:** LAF-04 council format spec; LAF-05 manifest definition; LAF-03 (parallel issue for OG copy)
-**Provisional assumption (updated 2026-05-04 LAF-04.02 per Tom):** Include all wards. For wards with no D4D recommendation *row*, render a "Check site" pill (neutral white-outlined fill, distinct from party pills) directing the voter to look up the ward live, since the recommendation may resolve before polling. Other no-rec variants — heart-recommendation abstentions, ONLY_REGRESSIVES, VOTE_WITH_HEART_NO_REGRESSIVES, uncontested wards — need separate copy decisions and will be handled when first encountered (composition's discriminated-union row type leaves room).
-**Options now superseded:**
-- ~~A) Omit (initial v1 behaviour).~~
-- B) Include with no-rec callout — chosen, with "Check site" copy.
-- ~~C) "(no contest)" badge — rejected as potentially misleading.~~
-**Decision needed by:** Before batch council production — confirm "Check site" copy + extend to other no-rec variants as they appear.
-**Status:** OPEN — provisional updated; awaiting parent close.
+**Trigger:** Adur's Marine ward (E05007568) has a contested ballot with locked candidates but no recommendation row in D4D. Algorithm hasn't produced one — likely pending and may resolve before polling.
+**Updated 2026-05-04 LAF-04.02 per Tom:** "no recommendation" is a multi-case category — the council format needs a stable convention before batch council production. May want unified copy that works for all variants, or per-case copy.
+
+**Variants observed or implied by D4D schema (`recommendations.reason_code` + missing-row case):**
+
+| Case | Description | D4D signal |
+|------|-------------|-----------|
+| **A. Pending** | Algorithm hasn't produced a recommendation row yet (likely most common). | No row in `recommendations` for the ballot. *Marine ward — current case.* |
+| **B. Heart recommendation (vote freely)** | Multi-party progressive bloc; any choice is fine. | `reason_code` = `VOTE_WITH_HEART_NO_REGRESSIVES`, `VOTE_WITH_HEART_REGRESSIVE_CANT_WIN`. *Wales-wide baseline – DQ-STRAT-24.* |
+| **C. Cancelled / uncontested** | No vote possible or no contest. | `reason_code` = `CANCELLED`, `UNCONTESTED`, `NO_CANDIDATES_FOUND`, `CANDIDATES_UNLOCKED`. |
+| **D. Algorithm declined (tactical)** | Tactical call too uncertain or impossible from data. | `reason_code` = `NEXT_RECOMMENDATION_TOO_CLOSE_TO_CALL`, `INDEPENDENT_IS_NEXT_BIGGEST`, `SMALL_PARTY_IS_NEXT_BIGGEST`, `NEXT_BIGGEST_PLACED_TOO_LOW_PREVIOUSLY`, `ONLY_REGRESSIVES_STANDING`, `NO_PREVIOUS_ELECTIONS_FOUND`, `LAST_ELECTION_MISSING_VOTE_COUNTS`. |
+
+**Options for council video copy:**
+
+1. **Unified "Check site"** (currently implemented for case A) — defers to live site for the user-friendly explanation. Single label across A/B/C/D. Lowest risk, highest abstraction. Tom's preferred direction "unless we can come up with copy that works for all".
+2. **Differentiated labels** — e.g. A → "Pending"/"TBC", B → "Vote your heart"/"Multi-party", C → "Cancelled"/"No vote", D → "No clear lead". Requires per-case copy review and a `reason_code → label` mapping table.
+3. **Hybrid** — unified "Check site" for v1 batch; differentiated copy for v2 once category usage is known across the ~136-council corpus.
+
+**Research action item for parent (LAF-00.13 or sooner):**
+- Audit `reason_code` distribution across all 7 May 2026 ENG locals — count rows per code in `recommendations`, plus count of ballots with no rec row at all. Tells us whether differentiated copy is worth the design cost or a unified label suffices.
+- Confirm Wales heart-rec is its own format track (DQ-STRAT-24) — those constituencies probably don't appear inside English-council videos, so case B may be moot for the ENG council batch but live for Welsh constituency-level videos.
+- Decide policy.
+
+**Provisional assumption:** Universal "Check site" for case A only (current behaviour for Marine). Cases B/C/D will be handled when first encountered. Composition's discriminated-union row type leaves room for new kinds without breaking existing tactical rendering.
+**Decision needed by:** Before batch council production.
+**Status:** OPEN — research action pending parent.
 
 ### DQ-VID-04 — Council video background treatment
 **Raised:** 2026-05-03 LAF-04.02
