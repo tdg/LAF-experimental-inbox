@@ -162,6 +162,19 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 **Status:** OPEN — provisional updated; awaiting parent close.
 **Note for LAF-01/LAF-05:** "best photo across council" needs a stable selection rule when batched — currently it's "highest `score` value in `sourcing_notes` across all wards' rank-2..5 photos". Worth pinning convention in LAF-05 manifest.
 
+### DQ-VID-05 — Short "all wards" council-video variant for monolithic-rec councils
+**Raised:** 2026-05-04 LAF-04.02
+**Trigger:** South Cambridgeshire (E07000012) renders as a 14-second 4-page video listing 26 wards — all of which recommend Liberal Democrat. The per-ward detail is identical for every viewer; the same message ("vote LD") repeats 26 times. A shorter "vote LD across South Cambridgeshire" variant would communicate the same information in 4–6 seconds, with stronger social-media legs and lower viewer cost.
+**Scope impact:** LAF-04 format spec (two variants vs one); LAF-05 manifest (flag councils as monolithic-rec vs mixed); LAF-06 distribution (which variant to seed)
+**Provisional assumption:** None yet — flagged for parent. v3 LOCKED format renders all wards regardless of homogeneity (current behaviour).
+**Sketch of options:**
+- A) **Per-council classification.** LAF-05 manifest tags each council `monolithic-rec | mixed-rec | partial-no-rec`. LAF-04 renders the appropriate variant: short "all wards LD" for monolithic, full ward-by-ward for mixed, mixed-with-Check-site for partial-no-rec.
+- B) **Full ward video for everyone, optional short variant additionally for monolithic.** Both produced; distribution decides.
+- C) **Defer.** Ship v3 LOCKED universally; revisit if seeding feedback shows the long format underperforms for monolithic councils.
+**Threshold question:** at what mix does "monolithic" become "mixed"? 100% same party, or ≥90%, or ≥80%? E.g. if 25/26 wards are LD and 1 is GRN, does it count as monolithic? (Tactical answer might be: include the dissenting ward in the short version to avoid misleading that one ward's voters.)
+**Decision needed by:** Before batch council production. Non-blocking for v3 LOCKED proof renders.
+**Status:** OPEN — note for parent (LAF-00.13).
+
 ### DQ-STRAT-25 — Part B §14 session-log drift on LAF-04.02 row
 **Raised:** 2026-05-03 LAF-04.02 (drift check at session open per Part B §15.3)
 **Trigger:** Part B v4.7 §14 still lists LAF-04.02 next-pickup as "60-video three-bucket batch (best images / tightest contests / Reform defences) × 3 variants = 180 MP4s. Local in Claude Code". This was the LAF-00.11-era scope; LAF-00.12 rescoped LAF-04.02 to ward batch + council paper-edit (recorded correctly in Part A §8 and the LAF-04.02 kickoff brief). LAF-04.01 row's next-pickup line carries the same stale reference.
