@@ -183,6 +183,41 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 **Decision needed by:** Whenever — non-blocking, fold into next Part B revision.
 **Status:** OPEN
 
+### DQ-DATA-02 — FOLLOW-UP — Scotland AMS regions: zero published recommendations
+**Raised:** 2026-05-02 LAF-01.09 (after parent's RESOLVED ruling on ballots-present)
+**Trigger:** Original DQ-DATA-02 resolved on D4D ballot presence (8 Scotland regions confirmed under `sp` slug). LAF-01.09 fact-check then found 0 published rows in `recommendations` for any of the 8 regions.
+**Scope impact:** LAF-01.09 (speculative sourcing decision pending answer), all downstream Scotland workstreams
+**Provisional assumption:** Tom 2026-05-02 — fire LAF-01.09 Scotland sourcing speculatively on the assumption recs land before 7 May. If LAF-05 confirms recs not coming, halt and reallocate.
+**Decision needed by:** ASAP — every hour of speculative sourcing risks producing assets that ship nowhere. Target: pre-Sun 3 May 12:00 UK.
+**Status:** OPEN
+**Action:** Escalation ping drafted for LAF-05 / D4D team — see `LAF-01.09-images-escalation-ping-laf05.md` in handover pack.
+
+### DQ-DATA-03 — Afan Ogwr Rhondda heart-rec missing
+**Raised:** 2026-05-02 LAF-01.09
+**Trigger:** During Wales D4D fact-check, 15 of 16 Senedd constituencies had heart-rec rows published (4 parties × 6 seats = 24 rows each, status `publish`). Afan Ogwr Rhondda (W09000048) has 0 rows.
+**Scope impact:** LAF-01.09 (sourcing proceeds anyway), LAF-04 Video, LAF-03 OG, LAF-06 Distribution — anything downstream of Wales recs would skip this constituency until the rec lands.
+**Provisional assumption:** Source images for the constituency normally. Asset bundle is held until rec lands; ship together once available.
+**Decision needed by:** Pre-polling. If rec doesn't land by Wed 6 May, LAF-04/03 skips this one.
+**Status:** OPEN
+**Action:** Escalation ping drafted for LAF-05 / D4D team.
+
+### DQ-DATA-04 — Blaenau Gwent Caerffili Rhymni: stale tactical drafts alongside heart publish
+**Raised:** 2026-05-02 LAF-01.09
+**Trigger:** Constituency W09000050 has both `rec_type='heart'` rows (status `publish`) and `rec_type='tactical'` rows (status `draft`) in `recommendations`. Tactical drafts likely stale from pre-heart-pivot work.
+**Scope impact:** Cleanup ask only. Doesn't affect LAF-01.09. Could affect LAF-04/03/06 if any consumer queries `recommendations` without filtering by `status='publish'`.
+**Provisional assumption:** Filter by `status='publish'` in all consumer queries; flag for cleanup but don't block on it.
+**Decision needed by:** Non-blocking; cleanup at LAF-05's convenience.
+**Status:** OPEN
+**Action:** Mentioned in LAF-05 / D4D escalation ping.
+
+### DQ-DATA-05 — D4D `gss_code` placeholder values for 12 of 16 Welsh constituencies
+**Raised:** 2026-05-02 LAF-01.09
+**Trigger:** During LAF-01.09 fact-check, D4D's `areas.gss_code` column returned `senedd:slug-format` strings (e.g. `senedd:bangor-conwy-mon`) for 12 of 16 Welsh Senedd constituencies. Only 4 had proper `W09xxxxxx` codes (Ceredigion Penfro / Clwyd / Gwynedd Maldwyn / Gŵyr Abertawe). Per parent's DQ-IMG-29 ruling, these are placeholder values, not pre-GSS gaps — Democracy Club's elections registry has proper W-codes for all 16.
+**Scope impact:** Any LAF workstream querying D4D for canonical Welsh GSS codes. Surfaced first in LAF-01.09 but will hit LAF-04 Video, LAF-03 OG, LAF-06 Distribution, and SRUK if they query D4D for Welsh `gss_code`.
+**Provisional assumption:** LAF-01.09 has worked around it: fetched correct W-codes from `elections.democracyclub.org.uk` (6 verified directly, 6 inferred from sequence W09000048–W09000063 alphabetical), all 16 published in handover-pack manifest stub.
+**Decision needed by:** Non-blocking for LAF-01.09. Should be fixed in D4D before any other workstream runs into it.
+**Status:** OPEN
+**Action:** Escalation ping drafted for LAF-05 / D4D team — asks for either ingestion of correct W-codes into D4D, or documentation of the placeholder convention so future workstreams aren't blindsided.
 ---
 
 ## Action items pending from LAF-00.12
