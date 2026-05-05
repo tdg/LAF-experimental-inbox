@@ -329,6 +329,45 @@ LAF-01 sourcer does not currently pull from Pixabay (sources are Wikimedia Commo
 **Status:** OPEN
 **Action:** Escalation ping drafted for LAF-05 / D4D team — asks for either ingestion of correct W-codes into D4D, or documentation of the placeholder convention so future workstreams aren't blindsided.
 
+### DQ-VID-07 — Video artifact hosting and distribution
+**Raised:** 2026-05-05 LAF-04.02 close
+**Trigger:** LAF-04.02 produced 171 MP4s (~250 MB total) on Tom's local SSD with no decision on where they live for distribution. Schedulers (Buffer, etc.) need public URLs to fetch from. The same question will recur — and at greater scale — for LAF-04.03 (Senedd), LAF-04.04 (full English-locals batch ~3,000 MP4s ≈ 5 GB), and any future video pipeline run.
+**Scope impact:** LAF-04 (all video sessions), LAF-06 (distribution / scheduling), and adjacent to **DQ-IMG-28** (image storage migration & live-upload pattern — the same architectural question for images).
+**Status:** OPEN — Tom's direction below; provisioning steps pending.
+
+**Constraints surfaced:**
+- Files need publishable URLs that schedulers and social platforms can fetch.
+- Source code (roster, render scripts, Remotion sources, locked PNGs) must stay private — not all of it is content the public should browse.
+- Must scale from 250 MB (current 60-video batch) to ~5 GB (full English-locals) without architectural change.
+- No interest in adding billing complexity for marginal gain.
+
+**Options considered (5 May 2026 conversation):**
+
+| Option | Storage | Public URL story | Cost at 5 GB scale | Notes |
+|---|---|---|---|---|
+| A. Public GitHub repo, files committed directly | GitHub | `raw.githubusercontent.com/.../foo.mp4` | Free up to 1 GB soft limit; flagged at 5 GB | Repo bloat. No CDN. Per-file 100 MB cap (fine for MP4s). |
+| B. Public GitHub repo, files in Releases | GitHub | `github.com/.../releases/download/<tag>/foo.mp4` | Free, no repo-bloat | 2 GB per-file cap. Release-based delivery only, no live updates. |
+| C. Git LFS on private repo | GitHub LFS | Auth-gated — does not work for public schedulers without exposing PATs | $5/month per 50 GB pack | Ruled out: LFS in private repo doesn't give public URLs. LFS in public repo loses the privacy benefit. |
+| D. **Cloudflare R2 + custom domain** | R2 | `videos.<fd-domain>/foo.mp4` via CDN | 10 GB storage free; $0.015/GB-month after | Free ingress, **free egress**, full Cloudflare CDN, S3-compatible API for the render loop to upload directly. Requires Cloudflare account + domain on Cloudflare DNS (FD has both). |
+| E. Cloudflare R2 + `pub-*.r2.dev` | R2 | `pub-<hash>.r2.dev/foo.mp4` | Same as D | Cloudflare flags as not-for-production; rate-limit risk. Useful for testing only. |
+
+**Tom's direction (5 May 2026 conversation):** Option D — Cloudflare R2 with custom domain. R2 ingress + egress are both free; the custom-domain route puts the artifacts behind Cloudflare's CDN; the render loop can `aws s3 cp` straight to the bucket as an MP4 finishes (no batch upload step needed). Code repo stays private in the FD GitHub org; only the public-readable R2 bucket is exposed.
+
+**Provisioning steps (Tom to execute):**
+1. Cloudflare dashboard → R2 → Create bucket. Suggested name: `fd-laf-videos`. Region: Auto.
+2. Bucket → Settings → Connect Domain → enter subdomain (e.g. `videos.<fd-domain>`). Cloudflare auto-creates the DNS record + TLS cert. Public read is on by default for any uploaded object.
+3. R2 → Manage R2 API Tokens → Create API Token. Permissions: Object Read & Write, scoped to the new bucket. Save Account ID + Access Key + Secret (won't show again).
+4. Test from local CLI: `aws s3 cp test.mp4 s3://fd-laf-videos/ --endpoint-url https://<account-id>.r2.cloudflarestorage.com` → confirm `https://videos.<fd-domain>/test.mp4` resolves.
+5. Once working, add the upload step to `render-batch.py` so each (ward × variant) MP4 is pushed to R2 immediately on render completion.
+
+**Open sub-questions for parent:**
+- **Bucket name** — `fd-laf-videos`, `fd-elections-2026`, or other? Affects URL aesthetics and whether one bucket holds all elections forever or rolls over per cycle.
+- **Subdomain** — `videos.<fd-domain>`, `cdn.<fd-domain>`, `media.<fd-domain>`? Convention to choose.
+- **Per-cycle vs perpetual buckets** — single bucket with date-prefixed paths (`2026-05-07/abbey-portrait.mp4`) or fresh bucket per cycle? Lifecycle rules can auto-expire old objects either way.
+- **Render-code repo home** — is this in a new private repo in the FD GitHub org (e.g. `forward-democracy/laf-pipeline`), or does it land in an existing repo? Currently the Remotion source is in `~/Downloads/ward-videos/` (not under git), and bucket-build / render-loop scripts are in `~/dev/laf-04-02-buckets/` (also not under git). Both want a permanent home.
+- **Same architecture for images** (DQ-IMG-28)? If yes, second R2 bucket (`fd-laf-images`?) with same provisioning pattern. If no, why does video need cloud and image doesn't.
+
+**Decision needed by:** Pre-polling for current LAF-04.02 batch to be distributable. Pre-LAF-04.04 firing for the full English-locals batch.
 
 ---
 
