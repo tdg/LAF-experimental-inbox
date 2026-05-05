@@ -9,6 +9,38 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 
 ## Resolved this session (LAF-00.12) — kept visible for one session as audit trail
 
+DQ-VID-06 — Heart-rec pill design for council video format
+Raised: 2026-05-04 LAF-00.13
+Trigger: LAF-00.13 surfaced that the LAF-04.02 LOCKED Adur council format renders one party pill per row, but heart-rec wards (e.g. Cambridge · Petersfield) have multiple safe parties and SR's published rendering is the 🤍 emoji with no party named. The current single-pill design does not accommodate this. Design needed before any council video covering a heart-rec ward can ship.
+Scope impact: LAF-04 council video format spec; LAF-04 ward video format (if heart-rec ward variants are ever rendered); LAF-02 static cards (same row pattern); LAF-03 OG (single image, simpler treatment but same question — see LAF-05.01 audit Deliverable 3).
+Estimated affected ENG ballots (per LAF-00.13 D4D query, 4 May 2026): 48 ENG ballots have a published heart-rec alongside a draft tactical (mostly Cambridge-area councils, plus Oxford / Reading / Norwich / others). 3 more have published-heart-only. Plus all 16 Senedd constituencies (uniform 4-party heart). Quantification refined by LAF-05.01 audit.
+Tom's direction (2026-05-04 conversation):
+
+Likely two coloured pills per heart-rec row, party-coloured background, party-abbreviation white text. Format for the row would be e.g. Lab Grn (two pills side by side).
+Abbreviated form when space is tight: Lab, Grn, LD, PC (Plaid Cymru). LAB&CO may need to merge into Lab to save space.
+Heart symbol may be dropped entirely — two coloured pills alone may communicate "any of these" clearly.
+If heart symbol is kept, colour is pink (FD pink #FF89FF) not white.
+
+Sketch of options:
+OptionFormNotesA. Two/three coloured pills, no heartrow reads Lab Grn (or Lab Grn LD)Tom's lead direction. Cleanest.B. Pink heart + party initials inside one pillrow reads 🩷 GRN+LABCompact; small text risks unreadability on phone playbackC. Pink heart + multiple coloured pillsrow reads 🩷 Lab GrnMost explicit; widestD. Single "Vote progressive" pillrow reads Vote progressive (or similar)Loses the parties; deflects to site
+Open sub-questions:
+
+4-party Senedd case (Grn Lab LD PC): does Option A still fit on a row? Likely fine portrait at 1080px, but needs render test. Option D may be the only viable form.
+Order of party pills within a row: alphabetical by party name? D4D row order? Score-based?
+Does the same design apply to LAF-02 static cards and LAF-03 OG, or do those want different treatments given different aspect ratios and information densities?
+Long-name vs heart-rec vs photo-attribution density — likely needs render test before locking.
+
+**Decision (5 May 2026):** Option C — pink heart symbol (♥, Unicode U+2665) followed by party-coloured pills, e.g. `♥ Grn Lab` for 2-party, `♥ Grn Lab LD PC` for 4-party Senedd. Heart rendered FD pink #FF89FF via CSS. Same pattern across council videos (LAF-04 batch), static cards (LAF-02), and OG (LAF-03). Mockups at `LAF-00_13-strategy-dq-vid-06-heart-pill-mockups.html`.
+**Status:** RESOLVED LAF-00.13 (5 May 2026)
+Notes: Related to DQ-VID-03 (no-rec ward handling) — heart-rec is one of the four no-rec variants documented there. DQ-VID-06 is the design counterpart to DQ-VID-03's policy decision. Likely closed in same parent session as DQ-VID-03.
+
+### DQ-VID-01 — Sound for video pipeline
+**Raised:** 2026-05-02 LAF-00.12
+**Status:** RESOLVED LAF-04.03 (4 May 2026)
+**Resolution:** Layered ambient bed, same across ENG/Wales/Scotland and across ad/organic. Top layer: BlindRainGames "city-ambience" (CC0, Freesound), cut into different sections per council bucket. Bottom layer: logant547 "Transformer buzz" (CC0, Freesound), source as-is. Row A (transformer alone), Row B (city alone), and silence kept on hand as per-council overrides if the layered bed reads wrong on a specific council.
+Bed-prep specs at `LAF-04_03-video-sound-mockup-spec.md` for render session.
+**Cross-cutting findings raised:** Pixabay BLOCKED for all SRUK use due to political-context exclusion in their ToS (https://pixabay.com/service/terms/). CC-BY-NC and CC-BY-ND also BLOCKED per FMA's interpretation (campaign + syncing both excluded). Permitted licences for SRUK audio: CC0, CC-BY, CC-BY-SA only.
+
 ### DQ-STRAT-22 — Council vs ward as primary deliverable
 **Raised:** 2026-05-01 LAF-03.01 (surfaced via post-LAF-00.11 side-note)
 **Trigger:** Live SRUK site renders OG images at council level (`/local/{council}/`), not ward level.
@@ -46,6 +78,89 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 ---
 
 ## Open items
+
+### DQ-DATA-06 — Tactical-draft moderation throughput before 7 May polling
+**Raised:** 2026-05-05 LAF-05.01 (via LAF-00.13)
+**Trigger:** LAF-05.01 audit found 2,105 ENG ballots in TACTICAL_DRAFT_ONLY state (algorithm has written a draft tactical rec, human moderator hasn't published it yet). 131 of 156 ENG councils are BLOCKED_MODERATION_PENDING for council-video render purposes. Throughput between now and Thursday determines how many councils flip to SHIP_NOW.
+**Scope impact:** LAF-04 council batch shippable cohort grows from 21 ENG councils as moderation publishes drafts. Cannot be influenced from our side except by direct ask to SR back-end team.
+**Action:** Combined dev-team message (in flight, LAF-00.13) asks for moderation cadence between now and Thursday + whether bulk-publish operation possible. Tom 16 May dev pickup is the longer-term venue.
+**Provisional:** None. Re-run `/Users/tom/dev/laf-05-01-data/classify.py` daily Tue/Wed/Thu morning to track. Brief LAF-04.04 batch session to re-pull state at start.
+**Status:** OPEN — awaiting dev-team response
+
+---
+
+### DQ-DATA-07 — Stockport HEART_DRAFT_ONLY anomaly
+**Raised:** 2026-05-05 LAF-05.01 (via LAF-00.13)
+**Trigger:** Stockport has 3 wards in HEART_DRAFT_ONLY state — heart-rec drafted but not published. Anomalous: every other heart-rec in the cohort is published. Could be moderator oversight or a deliberate hold.
+**Scope impact:** Stockport currently classifies BLOCKED_DATA_ISSUE in render fitness. If the drafts publish, Stockport could become SHIP_WITH_HEART_PILL or SHIP_AS_HEART_ONLY.
+**Action:** Combined dev-team message asks: are these intended to publish?
+**Provisional:** Treat as BLOCKED for v1 batch. Surface to dev team.
+**Status:** OPEN — awaiting dev-team response
+
+---
+
+### DQ-DATA-08 — localData.json export cadence and freshness window
+**Raised:** 2026-05-05 LAF-05.01 (via LAF-00.13)
+**Trigger:** LAF-05.01 audit found localData.json (the static export the SR site serves) lags D4D by 24h+. Adur·Buckingham was published in D4D after the last rake export but doesn't yet appear in the live site. Concrete operational dependency for our mixed-source pipeline (D4D-direct for production, localData.json for distribution/check).
+**Scope impact:** If LAF-04 production renders against fresh D4D and distribution validates against stale localData.json, we'll see false-positive "missing" warnings during validation. Manageable with manual coordination.
+**Status:** ACKNOWLEDGED — devs aware, file is large, working on it (Tom 2026-05-05). No further ask. LAF-04 batch renders use D4D-direct as primary; localData.json as secondary cross-check only.
+**Action:** None pending; reflected in combined dev-team message (LAF-00_13-strategy-combined-dev-team-message.md) as informational not asking.
+
+---
+
+### DQ-DATA-09 — D4D possible duplicate heart row at Cambridge·Petersfield
+**Raised:** 2026-05-05 LAF-05.01 (via LAF-00.13)
+**Trigger:** Cambridge·Petersfield shows 3 published heart rows in D4D: GRN, LAB, LAB. The duplicate LAB is suspicious — natural pattern is one row per recommended party. Doesn't change downstream output (localData.json correctly merges) but might be a data-quality issue.
+**Scope impact:** None for v1 batch. Marginal.
+**Action:** Mention in combined dev-team message as a flagged data-quality observation.
+**Provisional:** No action needed downstream.
+**Status:** OPEN — flagged informationally
+
+---
+
+### DQ-DATA-02 — FOLLOW-UP — Scotland AMS regions: zero published recommendations
+**Raised:** 2026-05-02 LAF-01.09 (after parent's RESOLVED ruling on ballots-present)
+**Trigger:** Original DQ-DATA-02 resolved on D4D ballot presence (8 Scotland regions confirmed under `sp` slug). LAF-01.09 fact-check then found 0 published rows in `recommendations` for any of the 8 regions.
+**Scope impact:** LAF-01.09 (speculative sourcing decision pending answer), all downstream Scotland workstreams
+**Provisional assumption:** Tom 2026-05-02 — fire LAF-01.09 Scotland sourcing speculatively on the assumption recs land before 7 May. If LAF-05 confirms recs not coming, halt and reallocate.
+**Decision needed by:** ASAP — every hour of speculative sourcing risks producing assets that ship nowhere. Target: pre-Sun 3 May 12:00 UK.
+**Status:** OPEN
+**Action:** Escalation ping drafted for LAF-05 / D4D team — see `LAF-01.09-images-escalation-ping-laf05.md` in handover pack.
+
+### DQ-DATA-03 — Afan Ogwr Rhondda heart-rec missing
+**Raised:** 2026-05-02 LAF-01.09
+**Trigger:** During Wales D4D fact-check, 15 of 16 Senedd constituencies had heart-rec rows published (4 parties × 6 seats = 24 rows each, status `publish`). Afan Ogwr Rhondda (W09000048) has 0 rows.
+**Scope impact:** LAF-01.09 (sourcing proceeds anyway), LAF-04 Video, LAF-03 OG, LAF-06 Distribution — anything downstream of Wales recs would skip this constituency until the rec lands.
+**Provisional assumption:** Source images for the constituency normally. Asset bundle is held until rec lands; ship together once available.
+**Decision needed by:** Pre-polling. If rec doesn't land by Wed 6 May, LAF-04/03 skips this one.
+**Status:** OPEN
+**Action:** Escalation ping drafted for LAF-05 / D4D team.
+
+### DQ-DATA-04 — Blaenau Gwent Caerffili Rhymni: stale tactical drafts alongside heart publish
+**Raised:** 2026-05-02 LAF-01.09
+**Trigger:** Constituency W09000050 has both `rec_type='heart'` rows (status `publish`) and `rec_type='tactical'` rows (status `draft`) in `recommendations`. Tactical drafts likely stale from pre-heart-pivot work.
+**Scope impact:** Cleanup ask only. Doesn't affect LAF-01.09. Could affect LAF-04/03/06 if any consumer queries `recommendations` without filtering by `status='publish'`.
+**Provisional assumption:** Filter by `status='publish'` in all consumer queries; flag for cleanup but don't block on it.
+**Decision needed by:** Non-blocking; cleanup at LAF-05's convenience.
+**Status:** OPEN
+**Action:** Mentioned in LAF-05 / D4D escalation ping.
+
+### DQ-DATA-05 — D4D `gss_code` placeholder values for 12 of 16 Welsh constituencies
+**Raised:** 2026-05-02 LAF-01.09
+**Trigger:** During LAF-01.09 fact-check, D4D's `areas.gss_code` column returned `senedd:slug-format` strings (e.g. `senedd:bangor-conwy-mon`) for 12 of 16 Welsh Senedd constituencies. Only 4 had proper `W09xxxxxx` codes (Ceredigion Penfro / Clwyd / Gwynedd Maldwyn / Gŵyr Abertawe). Per parent's DQ-IMG-29 ruling, these are placeholder values, not pre-GSS gaps — Democracy Club's elections registry has proper W-codes for all 16.
+**Scope impact:** Any LAF workstream querying D4D for canonical Welsh GSS codes. Surfaced first in LAF-01.09 but will hit LAF-04 Video, LAF-03 OG, LAF-06 Distribution, and SRUK if they query D4D for Welsh `gss_code`.
+**Provisional assumption:** LAF-01.09 has worked around it: fetched correct W-codes from `elections.democracyclub.org.uk` (6 verified directly, 6 inferred from sequence W09000048–W09000063 alphabetical), all 16 published in handover-pack manifest stub.
+**Decision needed by:** Non-blocking for LAF-01.09. Should be fixed in D4D before any other workstream runs into it.
+**Status:** OPEN
+**Action:** Escalation ping drafted for LAF-05 / D4D team — asks for either ingestion of correct W-codes into D4D, or documentation of the placeholder convention so future workstreams aren't blindsided.
+
+### DQ-STRAT-27 — Pixabay excluded from all SRUK pipelines
+**Raised:** 2026-05-04 LAF-04.03 (via LAF-00.13)
+**Trigger:** LAF-04.03 audit of audio sources found Pixabay's ToS explicitly excludes "use in a political context (such as the promotion, advertisement or endorsement of any party, candidate, or elected official or in connection with any political party or viewpoint)". Verified 4 May 2026.
+**Scope impact:** Cross-cutting source-acceptability rule — applies to audio (LAF-04), images (LAF-01), and any future asset class.
+**Resolution:** Add to Part A §10 / Part B §17 source-acceptability rules: "Pixabay is excluded from any SRUK pipeline (audio, image, or video) due to political-context exclusion in their ToS."
+LAF-01 sourcer does not currently pull from Pixabay (sources are Wikimedia Commons, Geograph, Flickr per Part A §8.1) so this is informational only for v1. Codified for future-proofing.
+**Status:** RESOLVED LAF-00.13 (5 May 2026)
 
 ### DQ-IMG-23 — Old Warley council attribution mismatch
 **Raised:** 2026-05-02 LAF-01.08
@@ -98,12 +213,7 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 **Status:** OPEN
 **Notes:** Bilingual (Welsh/English) copy decision also pending – flagged in LAF-01.09 brief and DQ-IMG-27.
 
-### DQ-VID-01 — Sound for video pipeline
-**Raised:** 2026-05-02 LAF-00.12
-**Provisional assumption:** LAF-04.02 ships with silent track. Sound strategy resolved in a short follow-up session.
-**Decision needed by:** Before any wide council-video batch ships.
-**Status:** OPEN
-**Action:** Spawn short sound strat session for CC-licensed shortlist + scoping summary.
+
 
 ### DQ-OG-01 — Reframe OG Issue: Phase 1 council swap, Phase 2 ward future scope
 **Raised:** 2026-05-02 LAF-00.12 (from CC handoff)
@@ -219,31 +329,7 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 **Status:** OPEN
 **Action:** Escalation ping drafted for LAF-05 / D4D team — asks for either ingestion of correct W-codes into D4D, or documentation of the placeholder convention so future workstreams aren't blindsided.
 
-DQ-VID-06 — Heart-rec pill design for council video format
-Raised: 2026-05-04 LAF-00.13
-Trigger: LAF-00.13 surfaced that the LAF-04.02 LOCKED Adur council format renders one party pill per row, but heart-rec wards (e.g. Cambridge · Petersfield) have multiple safe parties and SR's published rendering is the 🤍 emoji with no party named. The current single-pill design does not accommodate this. Design needed before any council video covering a heart-rec ward can ship.
-Scope impact: LAF-04 council video format spec; LAF-04 ward video format (if heart-rec ward variants are ever rendered); LAF-02 static cards (same row pattern); LAF-03 OG (single image, simpler treatment but same question — see LAF-05.01 audit Deliverable 3).
-Estimated affected ENG ballots (per LAF-00.13 D4D query, 4 May 2026): 48 ENG ballots have a published heart-rec alongside a draft tactical (mostly Cambridge-area councils, plus Oxford / Reading / Norwich / others). 3 more have published-heart-only. Plus all 16 Senedd constituencies (uniform 4-party heart). Quantification refined by LAF-05.01 audit.
-Tom's direction (2026-05-04 conversation):
 
-Likely two coloured pills per heart-rec row, party-coloured background, party-abbreviation white text. Format for the row would be e.g. Lab Grn (two pills side by side).
-Abbreviated form when space is tight: Lab, Grn, LD, PC (Plaid Cymru). LAB&CO may need to merge into Lab to save space.
-Heart symbol may be dropped entirely — two coloured pills alone may communicate "any of these" clearly.
-If heart symbol is kept, colour is pink (FD pink #FF89FF) not white.
-
-Sketch of options:
-OptionFormNotesA. Two/three coloured pills, no heartrow reads Lab Grn (or Lab Grn LD)Tom's lead direction. Cleanest.B. Pink heart + party initials inside one pillrow reads 🩷 GRN+LABCompact; small text risks unreadability on phone playbackC. Pink heart + multiple coloured pillsrow reads 🩷 Lab GrnMost explicit; widestD. Single "Vote progressive" pillrow reads Vote progressive (or similar)Loses the parties; deflects to site
-Open sub-questions:
-
-4-party Senedd case (Grn Lab LD PC): does Option A still fit on a row? Likely fine portrait at 1080px, but needs render test. Option D may be the only viable form.
-Order of party pills within a row: alphabetical by party name? D4D row order? Score-based?
-Does the same design apply to LAF-02 static cards and LAF-03 OG, or do those want different treatments given different aspect ratios and information densities?
-Long-name vs heart-rec vs photo-attribution density — likely needs render test before locking.
-
-Provisional assumption: None — flagged for parent decision. Council video batch covering heart-rec wards is blocked until this is decided. Council batch covering non-heart-rec councils (the SHIP_NOW classification per LAF-05.01 Deliverable 2) is not blocked.
-Decision needed by: Before any heart-rec council enters batch production. If LAF-05.01 finds most ENG councils are SHIP_NOW, this becomes a slightly-less-urgent decision and the SHIP_WITH_HEART_PILL cohort waits for Option-A render tests.
-Status: OPEN
-Notes: Related to DQ-VID-03 (no-rec ward handling) — heart-rec is one of the four no-rec variants documented there. DQ-VID-06 is the design counterpart to DQ-VID-03's policy decision. Likely closed in same parent session as DQ-VID-03.
 ---
 
 ## Action items pending from LAF-00.12
