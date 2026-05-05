@@ -218,6 +218,32 @@ Live queue of cross-cutting decisions awaiting LAF-00 parent resolution. See `RE
 **Decision needed by:** Non-blocking for LAF-01.09. Should be fixed in D4D before any other workstream runs into it.
 **Status:** OPEN
 **Action:** Escalation ping drafted for LAF-05 / D4D team — asks for either ingestion of correct W-codes into D4D, or documentation of the placeholder convention so future workstreams aren't blindsided.
+
+DQ-VID-06 — Heart-rec pill design for council video format
+Raised: 2026-05-04 LAF-00.13
+Trigger: LAF-00.13 surfaced that the LAF-04.02 LOCKED Adur council format renders one party pill per row, but heart-rec wards (e.g. Cambridge · Petersfield) have multiple safe parties and SR's published rendering is the 🤍 emoji with no party named. The current single-pill design does not accommodate this. Design needed before any council video covering a heart-rec ward can ship.
+Scope impact: LAF-04 council video format spec; LAF-04 ward video format (if heart-rec ward variants are ever rendered); LAF-02 static cards (same row pattern); LAF-03 OG (single image, simpler treatment but same question — see LAF-05.01 audit Deliverable 3).
+Estimated affected ENG ballots (per LAF-00.13 D4D query, 4 May 2026): 48 ENG ballots have a published heart-rec alongside a draft tactical (mostly Cambridge-area councils, plus Oxford / Reading / Norwich / others). 3 more have published-heart-only. Plus all 16 Senedd constituencies (uniform 4-party heart). Quantification refined by LAF-05.01 audit.
+Tom's direction (2026-05-04 conversation):
+
+Likely two coloured pills per heart-rec row, party-coloured background, party-abbreviation white text. Format for the row would be e.g. Lab Grn (two pills side by side).
+Abbreviated form when space is tight: Lab, Grn, LD, PC (Plaid Cymru). LAB&CO may need to merge into Lab to save space.
+Heart symbol may be dropped entirely — two coloured pills alone may communicate "any of these" clearly.
+If heart symbol is kept, colour is pink (FD pink #FF89FF) not white.
+
+Sketch of options:
+OptionFormNotesA. Two/three coloured pills, no heartrow reads Lab Grn (or Lab Grn LD)Tom's lead direction. Cleanest.B. Pink heart + party initials inside one pillrow reads 🩷 GRN+LABCompact; small text risks unreadability on phone playbackC. Pink heart + multiple coloured pillsrow reads 🩷 Lab GrnMost explicit; widestD. Single "Vote progressive" pillrow reads Vote progressive (or similar)Loses the parties; deflects to site
+Open sub-questions:
+
+4-party Senedd case (Grn Lab LD PC): does Option A still fit on a row? Likely fine portrait at 1080px, but needs render test. Option D may be the only viable form.
+Order of party pills within a row: alphabetical by party name? D4D row order? Score-based?
+Does the same design apply to LAF-02 static cards and LAF-03 OG, or do those want different treatments given different aspect ratios and information densities?
+Long-name vs heart-rec vs photo-attribution density — likely needs render test before locking.
+
+Provisional assumption: None — flagged for parent decision. Council video batch covering heart-rec wards is blocked until this is decided. Council batch covering non-heart-rec councils (the SHIP_NOW classification per LAF-05.01 Deliverable 2) is not blocked.
+Decision needed by: Before any heart-rec council enters batch production. If LAF-05.01 finds most ENG councils are SHIP_NOW, this becomes a slightly-less-urgent decision and the SHIP_WITH_HEART_PILL cohort waits for Option-A render tests.
+Status: OPEN
+Notes: Related to DQ-VID-03 (no-rec ward handling) — heart-rec is one of the four no-rec variants documented there. DQ-VID-06 is the design counterpart to DQ-VID-03's policy decision. Likely closed in same parent session as DQ-VID-03.
 ---
 
 ## Action items pending from LAF-00.12
