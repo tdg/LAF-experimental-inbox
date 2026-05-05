@@ -371,6 +371,21 @@ LAF-01 sourcer does not currently pull from Pixabay (sources are Wikimedia Commo
 
 ---
 
+### DQ-IMG-30 — Wave 1 D4D filter excludes English-council wards with non-E/NET GSS prefixes
+**Raised:** 2026-05-03 LAF-01.08 (during slice 4)
+**Trigger:** LAF-01.08 Wave 1 D4D query used `(a.gss_code LIKE 'E%' OR a.gss_code LIKE 'NET%') AND territory_code = 'ENG'`. The pre-flight 50 captured wards from BNS / STY / WLL / SND / SOL / NET councils via a council-slug filter; slice 2 / 3 / 4 used the gss-prefix filter and missed any English council whose ward GSS codes don't start with `E` or `NET`. Norfolk County (`NFK:*`) and Suffolk County (`SFK:*`) are the most visible affected councils. Wave 1 ships at **2,170 wards** instead of ~2,540 — a ~370-ward shortfall.
+**Scope impact:** LAF-01.08 (already shipped, gap not closed); LAF-04 council selection / batch render (will see "no images" for any council relying on missing wards); LAF-03 OG (same).
+**Provisional assumption:** Council pivot (DQ-STRAT-22) reframes ward sourcing as input library for council-level selection — for councils whose wards aren't in the canonical batch, the council OG / video pipeline will fall back to council-centroid imagery. Norfolk and Suffolk councils each have ~60+ wards missing entirely from the input library, which means council selection for those two cannot draw from a within-council pool.
+**Decision needed by:** Pre-polling for any Norfolk / Suffolk council product to ship with within-council imagery.
+**Sketch of options:**
+- A) **Non-standard-prefix sweep.** Re-query D4D with `territory_code = 'ENG' AND gss_code NOT LIKE 'E%' AND gss_code NOT LIKE 'NET%'`, then run the v2.6 sourcer (with fd-branded palette) on whatever gap that returns. ~370 wards × ~70s/ward ≈ 7h compute. Result: every English council represented in the input library.
+- B) **Targeted Norfolk + Suffolk sweep only.** Query just those two councils' wards (~120 wards). ~2.5h compute. Smaller blast radius; doesn't catch any other excluded councils that haven't been spotted.
+- C) **Accept gap.** Ship Wave 1 as-is. Norfolk and Suffolk councils don't get within-council selection imagery; council pipeline falls back to centroid-only for those.
+**Status:** OPEN
+**Notes:** Compute risk is ~7h sustained Geograph / Commons activity; same throttle behaviour as the slice 4 run (no DNS dropouts when `caffeinate` is held + Tailscale stable). Original Wave 1 brief filter wording was the source of the gap — worth folding into LAF-01 sourcer brief template as "use territory_code, not gss prefix, when filtering for English councils".
+
+---
+
 ## Action items pending from LAF-00.12
 
 - [x] Inbox repo set up + initial commit
